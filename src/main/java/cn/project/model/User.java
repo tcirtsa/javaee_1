@@ -9,6 +9,6 @@ public class User {
     private String password;
     private String phone;
     private String address;
-    private Integer authority=0;
-    private String head="D:\\BaiduNetdiskDownload\\images\\default.jpg";
+    private Integer authority;
+    private String head;
 }

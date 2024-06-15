@@ -19,7 +19,7 @@ public interface uMapper {
     @Delete("delete from user where account = #{account}")
     public void deleteAccount(@Param("account") String account);
 
-    @Insert("insert into user(account,name,password) values(#{account},#{name},#{password})")
+    @Insert("insert into user(account,name,password,phone,address,authority,head) values(#{account},#{name},#{password},#{phone},#{address},#{authority},#{head})")
     public void insert_user(User user);
 
     @Select("select * from user order by account")

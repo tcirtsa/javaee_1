@@ -7,6 +7,27 @@
     <title>Document</title>
     <link href="icon.ico" rel="icon" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="css/table.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+        }
+        td{
+            width: 100px;
+            height: 100px;
+        }
+        img {
+            width: 100%;  /* 图片宽度设置为单元格宽度的100% */
+            height: auto; /* 图片高度根据宽度等比例缩放 */
+            object-fit: contain; /* 保持图片的宽高比，不被拉伸 */
+        }
+    </style>
 </head>
 <body>
 <p>Hello World</p>
@@ -25,9 +46,9 @@
         <th id="phone">phone</th>
         <th id="address">address</th>
         <th id="authority">authority</th>
+        <th id="image">image</th>
         <th>操作1</th>
         <th>操作2</th>
-        <th id="image">image</th>
     </tr>
     </thead>
     <tbody>

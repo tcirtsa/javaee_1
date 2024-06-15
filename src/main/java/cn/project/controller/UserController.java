@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping("upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
-                                                   @RequestParam("fileName") String FileName) {
+            @RequestParam("fileName") String FileName) {
         if (!file.isEmpty()) {
             try {
                 // 创建文件对象
@@ -50,8 +50,9 @@ public class UserController {
                 // 检查上传目录是否存在，如果不存在则创建
                 dest.getParentFile().mkdirs();
                 // 将上传的文件保存到指定的路径
-                Files.copy(file.getInputStream(), Paths.get(dest.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-                uMapper.updateHead(FileName,UPLOAD_DIRECTORY + File.separator + FileName + getFileExtension(file));
+                Files.copy(file.getInputStream(), Paths.get(dest.getAbsolutePath()),
+                        StandardCopyOption.REPLACE_EXISTING);
+                uMapper.updateHead(FileName, UPLOAD_DIRECTORY + File.separator + FileName + getFileExtension(file));
                 // 返回成功消息
                 return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
             } catch (IOException e) {
@@ -68,9 +69,9 @@ public class UserController {
     public ResponseEntity<?> get_all_accounts() {
         List<User> users;
         try {
-            users=uMapper.findAll();
+            users = uMapper.findAll();
             return ResponseEntity.ok(users);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("获取失败");
         }
     }
@@ -80,17 +81,41 @@ public class UserController {
         try {
             uMapper.updatePassword(user.getAccount(), user.getPassword());
             return ResponseEntity.ok("修改密码成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("修改密码失败");
         }
     }
 
     @PostMapping("insert_user")
-    public ResponseEntity<?> insert_user(@RequestBody User user) {
+    public ResponseEntity<?> insert_user(@RequestParam("image") MultipartFile image,
+            @RequestParam("account") String account, @RequestParam("name") String name,
+            @RequestParam("password") String password, @RequestParam("phone") String phone,
+            @RequestParam("address") String address, @RequestParam("authority") Integer authority) {
         try {
+            User user = new User();
+            user.setAccount(account);
+            user.setName(name);
+            user.setPassword(password);
+            user.setPhone(phone);
+            user.setAddress(address);
+            if (authority == 0) {
+                authority = 0;
+            } else if (authority == 1) {
+                authority = 1;
+            } else {
+                authority = 0;
+            }
+            user.setAuthority(authority);
+            user.setHead(UPLOAD_DIRECTORY + File.separator + account + getFileExtension(image));
+            File dest = new File(UPLOAD_DIRECTORY + File.separator + account + getFileExtension(image));
+            // 检查上传目录是否存在，如果不存在则创建
+            dest.getParentFile().mkdirs();
+            // 将上传的文件保存到指定的路径
+            Files.copy(image.getInputStream(), Paths.get(dest.getAbsolutePath()),
+                    StandardCopyOption.REPLACE_EXISTING);
             uMapper.insert_user(user);
             return ResponseEntity.ok("insert success");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("insert fail");
         }
     }
@@ -100,7 +125,7 @@ public class UserController {
         try {
             uMapper.deleteAccount(user.getAccount());
             return ResponseEntity.ok("删除成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("删除失败");
         }
     }
@@ -109,7 +134,7 @@ public class UserController {
     public ResponseEntity<?> query(@RequestBody User user) {
         try {
             return ResponseEntity.ok(uMapper.findByAccount(user.getAccount()));
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("查询失败");
         }
     }
@@ -118,29 +143,29 @@ public class UserController {
     public ResponseEntity<?> sort(@RequestBody User user) {
         List<User> users;
         try {
-            if (Objects.equals(user.getAccount(), "account")){
-                if(Objects.equals(user.getPassword(), "true")){
+            if (Objects.equals(user.getAccount(), "account")) {
+                if (Objects.equals(user.getPassword(), "true")) {
                     users = uMapper.sortAA();
-                }else{
+                } else {
                     users = uMapper.sortAD();
                 }
-            }else if (Objects.equals(user.getAccount(), "password")){
-                if (Objects.equals(user.getPassword(), "true")){
+            } else if (Objects.equals(user.getAccount(), "password")) {
+                if (Objects.equals(user.getPassword(), "true")) {
                     users = uMapper.sortPA();
-                }else{
+                } else {
                     users = uMapper.sortPD();
                 }
-            }else if (Objects.equals(user.getAccount(), "name")){
-                if (Objects.equals(user.getPassword(), "true")){
+            } else if (Objects.equals(user.getAccount(), "name")) {
+                if (Objects.equals(user.getPassword(), "true")) {
                     users = uMapper.sortNA();
-                }else{
+                } else {
                     users = uMapper.sortND();
                 }
-            }else{
+            } else {
                 return ResponseEntity.badRequest().body("排序失败");
             }
             return ResponseEntity.ok(users);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("排序失败");
         }
     }

@@ -145,7 +145,11 @@ function fetchData() {
                 });
                 const tr = document.createElement('tr');
                 let a='';
+                let n='';
                 let p='';
+                let ph='';
+                let ad='';
+                let au='';
 
                 // 创建account单元格
                 const accountCell = document.createElement('td');
@@ -159,7 +163,7 @@ function fetchData() {
                 const nameCell = document.createElement('td');
                 const nameInput = document.createElement('input');
                 nameInput.innerText = '';
-                nameInput.onblur=function(event) {a = event.target.value;}
+                nameInput.onblur=function(event) {n = event.target.value;}
                 nameCell.appendChild(nameInput)
                 tr.appendChild(nameCell);
 
@@ -175,7 +179,7 @@ function fetchData() {
                 const phoneCell = document.createElement('td');
                 const phoneInput = document.createElement('input');
                 phoneInput.innerText = '';
-                phoneInput.onblur=function(event) {p = event.target.value;}
+                phoneInput.onblur=function(event) {ph = event.target.value;}
                 phoneCell.appendChild(phoneInput)
                 tr.appendChild(phoneCell);
 
@@ -183,7 +187,7 @@ function fetchData() {
                 const addressCell = document.createElement('td');
                 const addressInput = document.createElement('input');
                 addressInput.innerText = '';
-                addressInput.onblur=function(event) {p = event.target.value;}
+                addressInput.onblur=function(event) {ad = event.target.value;}
                 addressCell.appendChild(addressInput)
                 tr.appendChild(addressCell);
 
@@ -191,7 +195,7 @@ function fetchData() {
                 const authorityCell = document.createElement('td');
                 const authorityInput = document.createElement('input');
                 authorityInput.innerText = '';
-                authorityInput.onblur=function(event) {p = event.target.value;}
+                authorityInput.onblur=function(event) {au = event.target.value;}
                 authorityCell.appendChild(authorityInput)
                 tr.appendChild(authorityCell);
 
@@ -199,24 +203,15 @@ function fetchData() {
                 const insertCell = document.createElement('td');
                 const insertButton = document.createElement('button');
                 insertButton.textContent = '添加';
-                insertButton.onclick = function() { insert_user(a,p); };
+                insertButton.onclick = function() { insert_user(a,n,p,ph,ad,au); };
                 insertCell.appendChild(insertButton);
                 tr.appendChild(insertCell);
 
                 const nullCell = document.createElement('td');
                 const nullButton = document.createElement('button');
                 nullButton.textContent = '随便点';
-                nullButton.onclick = function() { insert_user(a,p); };
                 nullCell.appendChild(nullButton);
                 tr.appendChild(nullCell);
-
-                // 创建image单元格
-                const imageCell = document.createElement('td');
-                const imageInput = document.createElement('input');
-                imageInput.innerText = '';
-                imageInput.onblur=function(event) {p = event.target.value;}
-                imageCell.appendChild(imageInput)
-                tr.appendChild(imageCell);
 
                 tableBody.appendChild(tr);
             })
@@ -226,14 +221,37 @@ function fetchData() {
     // 加载数据
     loadData();
 }
-function insert_user(a,n,p){
-    let data = { account:a,name:n, password:p };
+function insert_user(a,n,p,ph,ad,au){
+    if(a==''||n==''||p==''){
+        alert("请至少填上account、name和password");
+        return
+    }
+    if(au==''){
+        au=0
+    }
+    // 创建一个临时的文件输入元素
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*'; // 接受所有图片类型
+
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            alert('请选择一个文件');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('account', a);
+        formData.append('name', n);
+        formData.append('password', p);
+        formData.append('phone', ph);
+        formData.append('address', ad);
+        formData.append('authority', au);
     fetch('insert_user', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData
     })
         .then((response) => {
             if (!response.ok) {
@@ -252,7 +270,10 @@ function insert_user(a,n,p){
         .catch((error) => {
             console.error('Error:', error);
         });
+    });
+    fileInput.click();
 }
+
 
 function deleteItem(a) {
     fetch('delete_account', {
@@ -299,7 +320,7 @@ query_button.addEventListener('click',()=>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({account:query_account.value,password:''}),
+        body: JSON.stringify({account:query_account.value}),
     })
         .then(response => {if (!response.ok) {
             // 使用 response.text() 来读取错误消息
@@ -313,38 +334,37 @@ query_button.addEventListener('click',()=>{
             const tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ''; // 清空现有表格内容
 
-            data.forEach(row => {
                 const tr = document.createElement('tr');
 
                 // 创建account单元格
                 const accountCell = document.createElement('td');
-                accountCell.innerText = row.account;
+                accountCell.innerText = data.account;
                 tr.appendChild(accountCell);
 
                 // 创建name单元格
                 const nameCell = document.createElement('td');
-                nameCell.innerText = row.name;
+                nameCell.innerText = data.name;
                 tr.appendChild(nameCell);
 
                 // 创建psd单元格
                 const psdCell = document.createElement('td');
-                psdCell.innerText = row.password;
+                psdCell.innerText = data.password;
                 psdCell.addEventListener('click', () => makeCellEditable(accountCell,psdCell)); // 点击变为编辑状态
                 tr.appendChild(psdCell);
 
                 // 创建phone单元格
                 const phoneCell = document.createElement('td');
-                phoneCell.innerText = row.phone;
+                phoneCell.innerText = data.phone;
                 tr.appendChild(phoneCell);
 
                 // 创建address单元格
                 const addressCell = document.createElement('td');
-                addressCell.innerText = row.address;
+                addressCell.innerText = data.address;
                 tr.appendChild(addressCell);
 
                 // 创建authority单元格
                 const authorityCell = document.createElement('td');
-                authorityCell.innerText = row.authority;
+                authorityCell.innerText = data.authority;
                 tr.appendChild(authorityCell);
 
                 fetch('image', {
@@ -352,7 +372,7 @@ query_button.addEventListener('click',()=>{
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ head: row.head }), // 发送包含图片URL的JSON对象
+                    body: JSON.stringify({ head: data.head }), // 发送包含图片URL的JSON对象
                 })
                     .then(response => response.blob()) // 将响应解析为Blob对象
                     .then(blob => {
@@ -387,85 +407,8 @@ query_button.addEventListener('click',()=>{
                 tr.appendChild(uploadCell);
 
                 tableBody.appendChild(tr);
-            });
-            const tr = document.createElement('tr');
-            let a='';
-            let p='';
-
-            // 创建account单元格
-            const accountCell = document.createElement('td');
-            const accountInput = document.createElement('input');
-            accountInput.innerText = '';
-            accountInput.onblur=function(event) {a = event.target.value;}
-            accountCell.appendChild(accountInput);
-            tr.appendChild(accountCell);
-
-            // 创建name单元格
-            const nameCell = document.createElement('td');
-            const nameInput = document.createElement('input');
-            nameInput.innerText = '';
-            nameInput.onblur=function(event) {a = event.target.value;}
-            nameCell.appendChild(nameInput)
-            tr.appendChild(nameCell);
-
-            // 创建psd单元格
-            const psdCell = document.createElement('td');
-            const psdInput = document.createElement('input');
-            psdInput.innerText = '';
-            psdInput.onblur=function(event) {p = event.target.value;}
-            psdCell.appendChild(psdInput)
-            tr.appendChild(psdCell);
-
-            // 创建phone单元格
-            const phoneCell = document.createElement('td');
-            const phoneInput = document.createElement('input');
-            phoneInput.innerText = '';
-            phoneInput.onblur=function(event) {p = event.target.value;}
-            phoneCell.appendChild(phoneInput)
-            tr.appendChild(phoneCell);
-
-            // 创建address单元格
-            const addressCell = document.createElement('td');
-            const addressInput = document.createElement('input');
-            addressInput.innerText = '';
-            addressInput.onblur=function(event) {p = event.target.value;}
-            addressCell.appendChild(addressInput)
-            tr.appendChild(addressCell);
-
-            // 创建authority单元格
-            const authorityCell = document.createElement('td');
-            const authorityInput = document.createElement('input');
-            authorityInput.innerText = '';
-            authorityInput.onblur=function(event) {p = event.target.value;}
-            authorityCell.appendChild(authorityInput)
-            tr.appendChild(authorityCell);
-
-            // 不可编辑的其他数据单元格...
-            const insertCell = document.createElement('td');
-            const insertButton = document.createElement('button');
-            insertButton.textContent = '添加';
-            insertButton.onclick = function() { insert_user(a,p); };
-            insertCell.appendChild(insertButton);
-            tr.appendChild(insertCell);
-
-            const nullCell = document.createElement('td');
-            const nullButton = document.createElement('button');
-            nullButton.textContent = '随便点';
-            nullButton.onclick = function() { insert_user(a,p); };
-            nullCell.appendChild(nullButton);
-            tr.appendChild(nullCell);
-
-            // 创建image单元格
-            const imageCell = document.createElement('td');
-            const imageInput = document.createElement('input');
-            imageInput.innerText = '';
-            imageInput.onblur=function(event) {p = event.target.value;}
-            imageCell.appendChild(imageInput)
-            tr.appendChild(imageCell);
-
-            tableBody.appendChild(tr);
-        })
-        .catch(err => console.error('Error fetching data:', err));
+            })
+            .catch(err => console.error('Error fetching data:', err));
 })
 
 const sort_account=document.querySelector("#account");
@@ -567,7 +510,11 @@ function sort(e,b){
             });
             const tr = document.createElement('tr');
             let a='';
+            let n='';
             let p='';
+            let ph='';
+            let ad='';
+            let au='';
 
             // 创建account单元格
             const accountCell = document.createElement('td');
@@ -581,7 +528,7 @@ function sort(e,b){
             const nameCell = document.createElement('td');
             const nameInput = document.createElement('input');
             nameInput.innerText = '';
-            nameInput.onblur=function(event) {a = event.target.value;}
+            nameInput.onblur=function(event) {n = event.target.value;}
             nameCell.appendChild(nameInput)
             tr.appendChild(nameCell);
 
@@ -597,7 +544,7 @@ function sort(e,b){
             const phoneCell = document.createElement('td');
             const phoneInput = document.createElement('input');
             phoneInput.innerText = '';
-            phoneInput.onblur=function(event) {p = event.target.value;}
+            phoneInput.onblur=function(event) {ph = event.target.value;}
             phoneCell.appendChild(phoneInput)
             tr.appendChild(phoneCell);
 
@@ -605,7 +552,7 @@ function sort(e,b){
             const addressCell = document.createElement('td');
             const addressInput = document.createElement('input');
             addressInput.innerText = '';
-            addressInput.onblur=function(event) {p = event.target.value;}
+            addressInput.onblur=function(event) {ad = event.target.value;}
             addressCell.appendChild(addressInput)
             tr.appendChild(addressCell);
 
@@ -613,7 +560,7 @@ function sort(e,b){
             const authorityCell = document.createElement('td');
             const authorityInput = document.createElement('input');
             authorityInput.innerText = '';
-            authorityInput.onblur=function(event) {p = event.target.value;}
+            authorityInput.onblur=function(event) {au = event.target.value;}
             authorityCell.appendChild(authorityInput)
             tr.appendChild(authorityCell);
 
@@ -621,24 +568,17 @@ function sort(e,b){
             const insertCell = document.createElement('td');
             const insertButton = document.createElement('button');
             insertButton.textContent = '添加';
-            insertButton.onclick = function() { insert_user(a,p); };
+            insertButton.onclick = function() { insert_user(a,n,p,ph,ad,au); };
             insertCell.appendChild(insertButton);
             tr.appendChild(insertCell);
 
             const nullCell = document.createElement('td');
             const nullButton = document.createElement('button');
             nullButton.textContent = '随便点';
-            nullButton.onclick = function() { insert_user(a,p); };
             nullCell.appendChild(nullButton);
             tr.appendChild(nullCell);
 
-            // 创建image单元格
-            const imageCell = document.createElement('td');
-            const imageInput = document.createElement('input');
-            imageInput.innerText = '';
-            imageInput.onblur=function(event) {p = event.target.value;}
-            imageCell.appendChild(imageInput)
-            tr.appendChild(imageCell);
+            
 
             tableBody.appendChild(tr);
         })
@@ -685,6 +625,7 @@ function uploadFile(cell) {
             .then(result => {
                 console.log(result);
                 alert("上传成功");
+                fetchData();
             })
             .catch(error => {
                 console.error('上传失败:', error);
