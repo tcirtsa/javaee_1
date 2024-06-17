@@ -24,7 +24,7 @@ import cn.project.tools.*;
 
 @RestController
 public class TestController {
-    private static final String UPLOAD_DIRECTORY = "D:\\BaiduNetdiskDownload\\images";
+    private static final String UPLOAD_DIRECTORY = "src\\main\\webapp\\images";
 
     private final uMapper uMapper;
 

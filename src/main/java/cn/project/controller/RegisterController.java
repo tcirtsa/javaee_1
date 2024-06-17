@@ -17,7 +17,7 @@ import cn.project.tools.tool;
 
 @Controller
 public class RegisterController {
-    private static final String UPLOAD_DIRECTORY = "D:\\BaiduNetdiskDownload\\images";
+    private static final String UPLOAD_DIRECTORY = "src\\main\\webapp\\images";
     private uMapper uMapper;
 
     public RegisterController(uMapper uMapper) {

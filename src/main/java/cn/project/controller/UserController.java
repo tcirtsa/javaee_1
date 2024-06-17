@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.project.mapper.uMapper;
 import cn.project.model.User;
+import cn.project.tools.tool;
 
 @Controller
 public class UserController {
@@ -19,6 +20,9 @@ public class UserController {
     @GetMapping("user")
     public String user(@RequestParam("account") String account, Model model) {
         User user = uMapper.findByAccount(account);
+        String head = user.getHead();
+        head = tool.replacePathWithImages(head);
+        user.setHead(head);
         model.addAttribute("user", user);
         return "user";
     }

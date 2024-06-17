@@ -16,7 +16,7 @@ pageEncoding="UTF-8"%>
         >密码:<input
           name="password"
           pattern="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}"
-          title="密码必须至少8个字符，至少包含英文、数字和特殊字符"
+          title="密码必须至少8个字符,至少包含英文、数字和特殊字符"
           required
       /></label>
       <label>姓名:<input name="name" required /> </label>
