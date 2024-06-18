@@ -25,10 +25,14 @@ pageEncoding="UTF-8"%>
     <script type="text/javascript">
       // 从Flash属性中获取错误消息并弹出
       window.onload = function () {
-        var error = "${flash.error}";
+        var error = "${error}";
+        var account = "${account}";
         if (error) {
           alert(error);
           // 清除Flash属性，防止重复弹出
+          window.location.href = window.location.pathname;
+        } else if (account) {
+          alert("欢迎您," + account);
           window.location.href = window.location.pathname;
         }
       };
@@ -38,7 +42,8 @@ pageEncoding="UTF-8"%>
     <form action="login" method="post">
       <label>账号:<input name="account" /></label>
       <label>密码:<input name="password" /></label>
-      <input id="login" type="submit" value="登录" />
+      <input name="role" type="submit" value="用户登录" />
+      <input name="role" type="submit" value="管理员登录" />
     </form>
     <form action="register" method="get">
       <input id="register" type="submit" value="注册" />

@@ -13,6 +13,12 @@ public interface uMapper {
     @Select("select * from user where account = #{account}")
     public User findByAccount(@Param("account") String account);
 
+    @Select("select * from user where authority = 0 || authority = 2")
+    public List<User> findByAuthority();
+
+    @Select("select * from user where authority = 0 || authority = 2 and account = #{account}")
+    public User findByAuthorityAndAccount(@Param("account") String account);
+
     @Update("update user set password = #{password} where account = #{account}")
     public void updatePassword(@Param("account") String account, @Param("password") String password);
 
@@ -39,6 +45,24 @@ public interface uMapper {
 
     @Select("select * from user order by password desc")
     public List<User> sortPD();
+
+    @Select("select * from user order by account where authority = 0 || authority = 2")
+    public List<User> sortUAA();
+
+    @Select("select * from user order by account where authority = 0 || authority = 2 desc")
+    public List<User> sortUAD();
+
+    @Select("select * from user order by name where authority = 0 || authority = 2")
+    public List<User> sortUNA();
+
+    @Select("select * from user order by name where authority = 0 || authority = 2 desc")
+    public List<User> sortUND();
+
+    @Select("select * from user order by password where authority = 0 || authority = 2")
+    public List<User> sortUPA();
+
+    @Select("select * from user order by password where authority = 0 || authority = 2 desc")
+    public List<User> sortUPD();
 
     @Update("update user set address = #{address} where account = #{account}")
     public void updateAddress(@Param("account") String account, @Param("address") String address);

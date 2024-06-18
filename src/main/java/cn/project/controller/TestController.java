@@ -69,6 +69,17 @@ public class TestController {
         }
     }
 
+    @GetMapping("get_users")
+    public ResponseEntity<?> get_users() {
+        List<User> users;
+        try {
+            users = uMapper.findByAuthority();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("获取失败");
+        }
+    }
+
     @PostMapping("update_psd")
     public ResponseEntity<?> update_psd(@RequestBody User user) {
         try {
@@ -132,6 +143,15 @@ public class TestController {
         }
     }
 
+    @PostMapping("query_users")
+    public ResponseEntity<?> query_users(@RequestBody User user) {
+        try {
+            return ResponseEntity.ok(uMapper.findByAuthorityAndAccount(user.getAccount()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("查询失败");
+        }
+    }
+
     @PostMapping("sort")
     public ResponseEntity<?> sort(@RequestBody User user) {
         List<User> users;
@@ -182,6 +202,37 @@ public class TestController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("sort_users")
+    public ResponseEntity<?> sort_users(@RequestBody User user) {
+        List<User> users;
+        try {
+            if (Objects.equals(user.getAccount(), "account")) {
+                if (Objects.equals(user.getPassword(), "true")) {
+                    users = uMapper.sortUAA();
+                } else {
+                    users = uMapper.sortUAD();
+                }
+            } else if (Objects.equals(user.getAccount(), "password")) {
+                if (Objects.equals(user.getPassword(), "true")) {
+                    users = uMapper.sortUPA();
+                } else {
+                    users = uMapper.sortUPD();
+                }
+            } else if (Objects.equals(user.getAccount(), "name")) {
+                if (Objects.equals(user.getPassword(), "true")) {
+                    users = uMapper.sortUNA();
+                } else {
+                    users = uMapper.sortUND();
+                }
+            } else {
+                return ResponseEntity.badRequest().body("排序失败");
+            }
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("排序失败");
         }
     }
 }

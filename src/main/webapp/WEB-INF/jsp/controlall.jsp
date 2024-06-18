@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
     </style>
   </head>
   <body>
-    <p>Hello World</p>
+    <p>Hello 最高管理员${account}</p>
     <form action="#">
       <label
         >搜索账号:
@@ -61,5 +61,5 @@ pageEncoding="UTF-8"%>
     </table>
     <button id="refreshButton">刷新数据</button>
   </body>
-  <script src="js/connect.js" type="module"></script>
+  <script src="js/connectall.js" type="module"></script>
 </html>
