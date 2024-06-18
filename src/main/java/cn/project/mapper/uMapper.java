@@ -22,6 +22,9 @@ public interface uMapper {
     @Update("update user set password = #{password} where account = #{account}")
     public void updatePassword(@Param("account") String account, @Param("password") String password);
 
+    @Update("update user set authority = #{authority} where account = #{account}")
+    public void updateAuthority(@Param("account") String account, @Param("authority") int authority);
+
     @Delete("delete from user where account = #{account}")
     public void deleteAccount(@Param("account") String account);
 

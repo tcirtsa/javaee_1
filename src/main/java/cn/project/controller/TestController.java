@@ -90,6 +90,21 @@ public class TestController {
         }
     }
 
+    @PostMapping("update_authority")
+    public ResponseEntity<?> update_authority(@RequestBody User user) {
+        try {
+            if (user.getAuthority().equals(0) || user.getAuthority().equals(1) || user.getAuthority().equals(2)
+                    || user.getAuthority().equals(3)) {
+                uMapper.updateAuthority(user.getAccount(), user.getAuthority());
+                return ResponseEntity.ok("修改权限成功");
+            } else {
+                return ResponseEntity.badRequest().body("修改权限失败");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("修改权限失败");
+        }
+    }
+
     @PostMapping("insert_user")
     public ResponseEntity<?> insert_user(@RequestParam("image") MultipartFile image,
             @RequestParam("account") String account, @RequestParam("name") String name,
