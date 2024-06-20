@@ -1,7 +1,6 @@
 package cn.project.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,7 +19,7 @@ public class LoginController {
     @PostMapping("login")
     public String login(@RequestParam("account") String account, @RequestParam("password") String password,
             @RequestParam("role") String role,
-            RedirectAttributes redirectAttributes, Model model) {
+            RedirectAttributes redirectAttributes) {
         User user = uMapper.findByAccount(account);
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "account does not exist。");

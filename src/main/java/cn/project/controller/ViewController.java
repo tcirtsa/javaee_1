@@ -57,4 +57,19 @@ public class ViewController {
         }
         return "user";
     }
+
+    @GetMapping("controlall")
+    public String controlall(Model model) {
+        try {
+            String account = (String) model.asMap().get("account");
+            User user = uMapper.findByAccount(account);
+            String head = user.getHead();
+            head = tool.replacePathWithImages(head);
+            user.setHead(head);
+            model.addAttribute("user", user);
+        } catch (Exception e) {
+            return "redirect:/login";
+        }
+        return "controlall";
+    }
 }
