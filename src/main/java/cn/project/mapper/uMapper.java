@@ -7,7 +7,7 @@ import cn.project.model.User;
 
 @Mapper
 public interface uMapper {
-    @Select("select * from user")
+    @Select("select * from user where authority = 0 || authority = 2 || authority = 1")
     public List<User> findAll();
 
     @Select("select * from user where account = #{account}")
@@ -31,22 +31,22 @@ public interface uMapper {
     @Insert("insert into user(account,name,password,phone,address,authority,head) values(#{account},#{name},#{password},#{phone},#{address},#{authority},#{head})")
     public void insert_user(User user);
 
-    @Select("select * from user order by account")
+    @Select("select * from user order by account where authority = 0 || authority = 1 || authority = 2")
     public List<User> sortAA();
 
-    @Select("select * from user order by account desc")
+    @Select("select * from user order by account where authority = 0 || authority = 1 || authority = 2 desc")
     public List<User> sortAD();
 
-    @Select("select * from user order by name")
+    @Select("select * from user order by name where authority = 0 || authority = 1 || authority = 2")
     public List<User> sortNA();
 
-    @Select("select * from user order by name desc")
+    @Select("select * from user order by name where authority = 0 || authority = 1 || authority = 2 desc")
     public List<User> sortND();
 
-    @Select("select * from user order by password")
+    @Select("select * from user order by password where authority = 0 || authority = 1 || authority = 2")
     public List<User> sortPA();
 
-    @Select("select * from user order by password desc")
+    @Select("select * from user order by password where authority = 0 || authority = 1 || authority = 2 desc")
     public List<User> sortPD();
 
     @Select("select * from user order by account where authority = 0 || authority = 2")
