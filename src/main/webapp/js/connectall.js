@@ -31,11 +31,11 @@ function makeCellEditable(cell1, cell2) {
         return response.text();
       })
       .then((data) => {
-        console.log("Success:", data);
+        alert("Success:", data);
         fetchData();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   });
 
@@ -81,11 +81,11 @@ function makeCellEditable1(cell1, cell2) {
         return response.text();
       })
       .then((data) => {
-        console.log("Success:", data);
+        alert("Success:", data);
         fetchData();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   });
 
@@ -180,7 +180,7 @@ function fetchData() {
               tr.appendChild(imageCell);
             })
             .catch((error) => {
-              console.error("加载图片出错:", error);
+              alert("加载图片出错:", error);
             });
 
           // 不可编辑的其他数据单元格...
@@ -290,7 +290,7 @@ function fetchData() {
 
         tableBody.appendChild(tr);
       })
-      .catch((err) => console.error("Error fetching data:", err));
+      .catch((err) => alert("Error fetching data:", err));
   }
 
   // 加载数据
@@ -339,11 +339,11 @@ function insert_user(a, n, p, ph, ad, au) {
         return response.text();
       })
       .then((data) => {
-        console.log("Success:", data);
+        alert("Success:", data);
         fetchData();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert("Error:", error);
       });
   });
   fileInput.click();
@@ -369,15 +369,15 @@ function deleteItem(a) {
     })
     .then((result) => {
       if (result) {
-        console.log("Success:", result);
+        alert("Success:", result);
         // 删除成功，重新从服务器刷新数据
         fetchData();
       } else {
-        console.error("删除失败:", result);
+        alert("删除失败:", result);
       }
     })
     .catch((error) => {
-      console.error("请求错误:", error);
+      alert("请求错误:", error);
     });
 }
 
@@ -470,7 +470,7 @@ query_button.addEventListener("click", () => {
           tr.appendChild(imageCell);
         })
         .catch((error) => {
-          console.error("加载图片出错:", error);
+          alert("加载图片出错:", error);
         });
 
       // 不可编辑的其他数据单元格...
@@ -494,7 +494,7 @@ query_button.addEventListener("click", () => {
 
       tableBody.appendChild(tr);
     })
-    .catch((err) => console.error("Error fetching data:", err));
+    .catch((err) => alert("Error fetching data:", err));
 });
 
 const sort_account = document.querySelector("#account");
@@ -582,7 +582,7 @@ function sort(e, b) {
             tr.appendChild(imageCell);
           })
           .catch((error) => {
-            console.error("加载图片出错:", error);
+            alert("加载图片出错:", error);
           });
 
         // 不可编辑的其他数据单元格...
@@ -692,7 +692,7 @@ function sort(e, b) {
 
       tableBody.appendChild(tr);
     })
-    .catch((err) => console.error("Error fetching data:", err));
+    .catch((err) => alert("Error fetching data:", err));
   if (e === "account") a = b === "true" ? "false" : "true";
   else p = b === "true" ? "false" : "true";
 }
@@ -735,12 +735,12 @@ function uploadFile(cell) {
         return response.text();
       })
       .then((result) => {
-        console.log(result);
+        alert(result);
         alert("上传成功");
         fetchData();
       })
       .catch((error) => {
-        console.error("上传失败:", error);
+        alert("上传失败:", error);
         alert("文件上传失败");
       });
   });

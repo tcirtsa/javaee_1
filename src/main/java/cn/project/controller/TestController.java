@@ -27,9 +27,11 @@ public class TestController {
     private static final String UPLOAD_DIRECTORY = "src\\main\\webapp\\images";
 
     private final uMapper uMapper;
+    private final aMapper aMapper;
 
-    public TestController(uMapper uMapper) {
+    public TestController(uMapper uMapper,aMapper aMapper) {
         this.uMapper = uMapper;
+        this.aMapper = aMapper;
     }
 
     @PostMapping("upload")
@@ -93,8 +95,7 @@ public class TestController {
     @PostMapping("update_authority")
     public ResponseEntity<?> update_authority(@RequestBody User user) {
         try {
-            if (user.getAuthority().equals(0) || user.getAuthority().equals(1) || user.getAuthority().equals(2)
-                    || user.getAuthority().equals(3)) {
+            if (user.getAuthority().equals(0) || user.getAuthority().equals(1) || user.getAuthority().equals(2)) {
                 uMapper.updateAuthority(user.getAccount(), user.getAuthority());
                 return ResponseEntity.ok("修改权限成功");
             } else {
@@ -248,6 +249,35 @@ public class TestController {
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("排序失败");
+        }
+    }
+
+    @GetMapping("get_all_apparatus")
+    public ResponseEntity<?> get_all_apparatus() {
+        try {
+            List<Apparatus> apparatus = aMapper.findAll();
+            return ResponseEntity.ok(apparatus);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("获取失败");
+        }
+    }
+
+    @DeleteMapping("delete_apparatus")
+    public ResponseEntity<?> delete_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            aMapper.deleteByID(apparatus.getId());
+            return ResponseEntity.ok("删除成功");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("删除失败");
+        }
+    }
+
+    @PostMapping("query_apparatus")
+    public ResponseEntity<?> query_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            return ResponseEntity.ok(aMapper.findByID(apparatus.getId()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("查询失败");
         }
     }
 }
