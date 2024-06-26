@@ -29,7 +29,7 @@ public class TestController {
     private final uMapper uMapper;
     private final aMapper aMapper;
 
-    public TestController(uMapper uMapper,aMapper aMapper) {
+    public TestController(uMapper uMapper, aMapper aMapper) {
         this.uMapper = uMapper;
         this.aMapper = aMapper;
     }

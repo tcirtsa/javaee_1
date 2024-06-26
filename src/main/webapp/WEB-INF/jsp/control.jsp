@@ -31,9 +31,67 @@ pageEncoding="UTF-8"%>
         object-fit: contain; /* 保持图片的宽高比，不被拉伸 */
       }
     </style>
+    <script>
+      function changeToUser() {
+        document
+          .getElementById("changeToUser")
+          .addEventListener("click", function () {
+            let table = document.getElementById("data-table");
+            table.innerHTML = `<thead>
+        <tr>
+          <th id="account">account</th>
+          <th id="name">name</th>
+          <th id="password">password</th>
+          <th id="phone">phone</th>
+          <th id="address">address</th>
+          <th id="authority">authority</th>
+          <th>操作1</th>
+          <th>操作2</th>
+          <th id="image">image</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>`;
+            let currantScript = document.getElementById("connect");
+            if ((currantScript.src = "")) {
+              currantScript.src = "js/connectall.js";
+            }
+          });
+      }
+      function changeToApparatus() {
+        document
+          .getElementById("changeToApparatus")
+          .addEventListener("click", function () {
+            let table = document.getElementById("data-table");
+            table.innerHTML = `<thead>
+        <tr>
+          <th id="id">id</th>
+          <th id="name">name</th>
+          <th id="type">type</th>
+          <th id="phone">status</th>
+          <th id="who">who</th>
+          <th id="address">address</th>
+          <th id="description">description</th>
+          <th id="time">time</th>
+          <th>操作1</th>
+          <th>操作2</th>
+          <th id="image">image</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>`;
+            let currantScript = document.getElementById("connect");
+            if ((currantScript.src = "js/connectall.js")) {
+              currantScript.src = "";
+            }
+          });
+      }
+    </script>
   </head>
   <body>
     <p>Hello 管理员${account}</p>
+    <button id="changeToUser" onclick="changeToUser()">用户</button>
+    <button id="changeToApparatus" onclick="changeToApparatus()">仪器</button>
     <form action="#">
       <label
         >搜索账号:

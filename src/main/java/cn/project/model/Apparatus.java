@@ -9,10 +9,10 @@ public class Apparatus {
     private String id;
     private String name;
     private String type;
-    private Integer status=0;
+    private Integer status;
     private String who;
     private String address;
     private String description;
     private Date time;
-    private String image="D:\\BaiduNetdiskDownload\\images\\default.jpg";
+    private String image;
 }
