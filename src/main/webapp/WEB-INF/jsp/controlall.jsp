@@ -108,9 +108,9 @@ pageEncoding="UTF-8"%>
           <th id="phone">phone</th>
           <th id="address">address</th>
           <th id="authority">authority</th>
-          <th id="image">image</th>
           <th>操作1</th>
           <th>操作2</th>
+          <th id="image">image</th>
         </tr>
       </thead>
       <tbody>
