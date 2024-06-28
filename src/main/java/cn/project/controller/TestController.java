@@ -262,7 +262,94 @@ public class TestController {
         }
     }
 
-    @DeleteMapping("delete_apparatus")
+    @PostMapping("query_apparatus")
+    public ResponseEntity<?> query_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            return ResponseEntity.ok(aMapper.findByID(apparatus.getId()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("查询失败");
+        }
+    }
+
+    @PostMapping("image_apparatus")
+    public ResponseEntity<Resource> image_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            Path path = Paths.get(apparatus.getImage());
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("rent_apparatus")
+    public ResponseEntity<?> rent_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            Apparatus a = aMapper.findByID(apparatus.getId());
+            a.setWho(apparatus.getWho());
+            a.setStatus(1);
+            aMapper.lendByID(a);
+            return ResponseEntity.ok("租用成功");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("租用失败");
+        }
+    }
+
+    @PostMapping("return_apparatus")
+    public ResponseEntity<?> return_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            Apparatus a = aMapper.findByID(apparatus.getId());
+            if (a.getWho().equals(apparatus.getWho())) {
+                a.setWho("");
+                a.setStatus(0);
+                aMapper.returnByID(a);
+                return ResponseEntity.ok("归还成功");
+            } else {
+                return ResponseEntity.ok().body("归还失败");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("归还失败");
+        }
+    }
+
+    @PostMapping("repair_apparatus")
+    public ResponseEntity<?> repair_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            Apparatus a = aMapper.findByID(apparatus.getId());
+            a.setStatus(0);
+            aMapper.returnByID(a);
+            return ResponseEntity.ok("维修成功");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("维修失败");
+        }
+    }
+
+    @PostMapping("ToRepair_apparatus")
+    public ResponseEntity<?> ToRepair_apparatus(@RequestBody Apparatus apparatus) {
+        try {
+            Apparatus a = aMapper.findByID(apparatus.getId());
+            a.setStatus(2);
+            a.setWho(apparatus.getWho());
+            aMapper.lendByID(a);
+            ;
+            return ResponseEntity.ok("维修成功");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("维修失败");
+        }
+    }
+
+    @PostMapping("delete_apparatus")
     public ResponseEntity<?> delete_apparatus(@RequestBody Apparatus apparatus) {
         try {
             aMapper.deleteByID(apparatus.getId());
@@ -272,12 +359,39 @@ public class TestController {
         }
     }
 
-    @PostMapping("query_apparatus")
-    public ResponseEntity<?> query_apparatus(@RequestBody Apparatus apparatus) {
+    @PostMapping("upload_apparatus_image")
+    public ResponseEntity<String> upload_apparatus_image(@RequestParam("file") MultipartFile file,
+            @RequestParam("fileName") String FileName) {
+        if (!file.isEmpty()) {
+            try {
+                // 创建文件对象
+                File dest = new File(UPLOAD_DIRECTORY + File.separator + FileName + tool.getFileExtension(file));
+                // 检查上传目录是否存在，如果不存在则创建
+                dest.getParentFile().mkdirs();
+                // 将上传的文件保存到指定的路径
+                Files.copy(file.getInputStream(), Paths.get(dest.getAbsolutePath()),
+                        StandardCopyOption.REPLACE_EXISTING);
+                aMapper.updateImage(FileName,
+                        UPLOAD_DIRECTORY + File.separator + FileName + tool.getFileExtension(file));
+                // 返回成功消息
+                return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
+            } catch (IOException e) {
+                // 处理文件上传失败的情况
+                return new ResponseEntity<>("Error uploading file", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            // 返回文件为空的消息
+            return new ResponseEntity<>("Error: No file uploaded", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("insert_apparatus")
+    public ResponseEntity<?> insert_apparatus(@RequestBody Apparatus apparatus) {
         try {
-            return ResponseEntity.ok(aMapper.findByID(apparatus.getId()));
+            aMapper.addApparatus(apparatus);
+            return ResponseEntity.ok("添加成功");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("查询失败");
+            return ResponseEntity.badRequest().body("添加失败");
         }
     }
 }

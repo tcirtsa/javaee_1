@@ -26,13 +26,14 @@ public interface aMapper {
     public void deleteByID(@Param("id") String id);
 
     @Update("update apparatus set who = #{who}, status = #{status}, time = now(), address = #{address} where id = #{id}")
-    public void lendByID(@Param("id") String id, @Param("who") String who, @Param("status") String status);
+    public void lendByID(Apparatus apparatus);
 
     @Update("update apparatus set type = #{type}, name = #{name}, description = #{description},id = #{Newid},address = #{address} where id = #{id}")
-    public void updateByID(@Param("id") String id, @Param("type") String type, @Param("name") String name, @Param("description") String description, @Param("Newid") String Newid, @Param("address") String address);
+    public void updateByID(@Param("id") String id, @Param("type") String type, @Param("name") String name,
+            @Param("description") String description, @Param("Newid") String Newid, @Param("address") String address);
 
     @Update("update appratus set status = #{status},time = now(),who = #{who},address = #{address} where id = #{id}")
-    public void returnByID(@Param("id") String id, @Param("status") String status, @Param("who") String who, @Param("address") String address);
+    public void returnByID(Apparatus apparatus);
 
     @Insert("insert into apparatus (id,name,type,status,who,address,description,time) values(#{id},#{name},#{type},#{status},#{who},#{address},#{description},now())")
     public void addApparatus(Apparatus apparatus);

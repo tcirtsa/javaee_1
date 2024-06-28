@@ -256,7 +256,7 @@ function uploadFile(cell) {
     formData.append("file", file);
     formData.append("fileName", fileName);
 
-    fetch("upload", {
+    fetch("upload_apparatus_image", {
       method: "POST",
       body: formData,
     })
