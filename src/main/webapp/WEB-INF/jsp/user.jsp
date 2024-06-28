@@ -68,6 +68,7 @@ pageEncoding="UTF-8"%>
         <br /><span id="username"></span>
       </div>
       <button id="reset_psd">修改密码</button>
+      <button id="reset_head">上传头像</button>
     </div>
     <div class="content">
       <table id="data-table">
@@ -95,7 +96,7 @@ pageEncoding="UTF-8"%>
   <script>
     document.getElementById("reset_psd").addEventListener("click", function () {
       window.location.href = "reset_psd";
-    })
+    });
   </script>
   <script src="js/user.js"></script>
   <script src="js/apparatus.js"></script>
