@@ -32,7 +32,7 @@ public interface aMapper {
     public void updateByID(@Param("id") String id, @Param("type") String type, @Param("name") String name,
             @Param("description") String description, @Param("Newid") String Newid, @Param("address") String address);
 
-    @Update("update appratus set status = #{status},time = now(),who = #{who},address = #{address} where id = #{id}")
+    @Update("update apparatus set status = #{status},time = now(),who = #{who},address = #{address} where id = #{id}")
     public void returnByID(Apparatus apparatus);
 
     @Insert("insert into apparatus (id,name,type,status,who,address,description,time) values(#{id},#{name},#{type},#{status},#{who},#{address},#{description},now())")

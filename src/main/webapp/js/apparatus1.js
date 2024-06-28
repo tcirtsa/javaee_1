@@ -17,7 +17,8 @@ window.onload = function () {
       return response.json();
     })
     .then((data) => {
-      document.getElementById("username").innerText = "你好：" + data.name;
+      document.getElementById("username").innerText =
+        "你好 维修员 " + data.name;
       fetch("image", {
         method: "POST",
         headers: {

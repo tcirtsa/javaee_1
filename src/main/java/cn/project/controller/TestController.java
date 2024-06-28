@@ -329,9 +329,9 @@ public class TestController {
             Apparatus a = aMapper.findByID(apparatus.getId());
             a.setStatus(0);
             aMapper.returnByID(a);
-            return ResponseEntity.ok("维修成功");
+            return ResponseEntity.ok("repair success");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("维修失败");
+            return ResponseEntity.badRequest().body("repair failed");
         }
     }
 
@@ -342,7 +342,6 @@ public class TestController {
             a.setStatus(2);
             a.setWho(apparatus.getWho());
             aMapper.lendByID(a);
-            ;
             return ResponseEntity.ok("维修成功");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("维修失败");
