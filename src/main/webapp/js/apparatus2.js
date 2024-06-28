@@ -1,4 +1,5 @@
 window.onload = fetchData;
+document.getElementById("refreshButton").addEventListener("click", fetchData);
 function fetchData() {
   fetch("get_all_apparatus", {
     method: "GET",

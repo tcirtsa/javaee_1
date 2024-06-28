@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
     </style>
   </head>
   <body>
-    <p>Hello 维修员${account}</p>
+    <p>Hello 维修员</p>
     <form action="#">
       <label
         >搜索仪器:
@@ -61,4 +61,5 @@ pageEncoding="UTF-8"%>
     </table>
     <button id="refreshButton">刷新数据</button>
   </body>
+  <script src="js/apparatus.js"></script>
 </html>

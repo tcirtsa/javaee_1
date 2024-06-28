@@ -78,10 +78,6 @@ pageEncoding="UTF-8"%>
       </thead>
       <tbody>
       </tbody>`;
-            let currantScript = document.getElementById("connect");
-            if ((currantScript.src = "")) {
-              currantScript.src = "js/connectall.js";
-            }
           });
       }
       function changeToApparatus() {
@@ -106,10 +102,6 @@ pageEncoding="UTF-8"%>
       </thead>
       <tbody>
       </tbody>`;
-            let currantScript = document.getElementById("connect");
-            if ((currantScript.src = "js/connectall.js")) {
-              currantScript.src = "";
-            }
           });
       }
     </script>
@@ -145,5 +137,6 @@ pageEncoding="UTF-8"%>
     </table>
     <button id="refreshButton">刷新数据</button>
   </body>
-  <script src="js/connectall.js" type="module" id="connect"></script>
+  <script src="js/connectall.js" type="module"></script>
+  <script src="js/apparatus2.js" type="module"></script>
 </html>

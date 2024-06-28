@@ -1,6 +1,5 @@
-let account = sessionStorage.getItem("account");
-window.onload = fetchData;
-function fetchData() {
+window.onload = fetchData1;
+function fetchData1() {
   fetch("get_all_apparatus", {
     method: "GET",
     headers: {
@@ -127,7 +126,7 @@ function rent(button) {
       .then((text) => {
         alert(text);
         button.textContent = "出租中";
-        fetchData();
+        fetchData1();
       })
       .catch((error) => {
         alert("请求错误:", error);
@@ -157,7 +156,7 @@ function return_apparatus(id, button) {
         } else if (text == "归还失败") {
           alert("不是你借的，你还什么？");
         }
-        fetchData();
+        fetchData1();
       })
       .catch((error) => {
         alert("请求错误:", error);

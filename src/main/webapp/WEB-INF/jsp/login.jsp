@@ -39,10 +39,10 @@ pageEncoding="UTF-8"%>
     </script>
   </head>
   <body>
-      <label>账号:<input name="account" id="account" /></label>
-      <label>密码:<input name="password" id="password" /></label>
-      <button id="login_user">用户登录</button>
-      <button id="login_admin">管理员登录</button>
+    <label>账号:<input name="account" id="account" /></label>
+    <label>密码:<input name="password" id="password" /></label>
+    <button id="login_user">用户登录</button>
+    <button id="login_admin">管理员登录</button>
     <form action="register" method="get">
       <input id="register" type="submit" value="注册" />
     </form>
@@ -98,7 +98,7 @@ pageEncoding="UTF-8"%>
           if (data == "3") {
             window.location.href = "/controlall";
           } else if (data == "2") {
-            window.location.href = "/?";
+            window.location.href = "/repair";
           } else if (data == "1") {
             window.location.href = "/control";
           } else {

@@ -1,6 +1,44 @@
 let account = sessionStorage.getItem("account");
-window.onload = fetchData;
-function fetchData() {
+window.onload = function () {
+  fetch("query", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ account: account }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // 使用 response.text() 来读取错误消息
+        return response.text().then((errorMessage) => {
+          throw new Error(`请求失败：${response.status} -${errorMessage}`);
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      document.getElementById("username").innerText = "你好：" + data.name;
+      fetch("image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ head: data.head }), // 发送包含图片URL的JSON对象
+      })
+        .then((response) => response.blob()) // 将响应解析为Blob对象
+        .then((blob) => {
+          // 将Blob对象转换为Image URL
+          const imgURL = URL.createObjectURL(blob);
+
+          document.getElementById("image").src = imgURL;
+        })
+        .catch((error) => {
+          alert("加载图片出错:", error);
+        });
+    });
+  fetchData1();
+};
+function fetchData1() {
   fetch("get_all_apparatus", {
     method: "GET",
     headers: {
@@ -108,22 +146,25 @@ function repair(id, button) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: id ,who:account}),
-    }).then((response) => {
-      if (!response.ok) {
-        // 使用 response.text() 来读取错误消息
-        return response.text().then((errorMessage) => {
-          throw new Error(`请求失败：${response.status} -${errorMessage}`);
-        });
-      }
-      // 使用 response.text() 来读取成功的响应
-      return response.text();
-    }).then((data) => {
-      alert(data);
-      fetchData();
-    }).catch((error) => {
-      alert("请求错误:", error);
-    });
+      body: JSON.stringify({ id: id, who: account }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // 使用 response.text() 来读取错误消息
+          return response.text().then((errorMessage) => {
+            throw new Error(`请求失败：${response.status} -${errorMessage}`);
+          });
+        }
+        // 使用 response.text() 来读取成功的响应
+        return response.text();
+      })
+      .then((data) => {
+        alert(data);
+        fetchData1();
+      })
+      .catch((error) => {
+        alert("请求错误:", error);
+      });
     alert("确定坏了吧？那就给我修！！！没坏的话给我变回去啊！");
   } else if (content == "维修中") {
     fetch("repair_apparatus", {
@@ -145,7 +186,7 @@ function repair(id, button) {
       })
       .then((data) => {
         alert(data);
-        fetchData();
+        fetchData1();
       })
       .catch((error) => {
         alert("请求错误:", error);

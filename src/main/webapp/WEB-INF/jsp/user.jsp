@@ -35,6 +35,28 @@ pageEncoding="UTF-8"%>
       span {
         font-weight: bold;
       }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 5px;
+      }
+      td {
+        width: 100px;
+        height: 100px;
+      }
+      img {
+        width: 100%; /* 图片宽度设置为单元格宽度的100% */
+        height: auto; /* 图片高度根据宽度等比例缩放 */
+        object-fit: contain; /* 保持图片的宽高比，不被拉伸 */
+      }
     </style>
   </head>
   <body>
