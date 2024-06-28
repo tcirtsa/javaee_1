@@ -41,14 +41,34 @@ pageEncoding="UTF-8"%>
     <div class="header">
       <div class="profile">
         <div class="image-container">
-          <img src="${user.head}" alt="用户头像" class="image" />
+          <img id="image" alt="用户头像" class="image" />
         </div>
-        <br /><span>你好:${user.name}</span>
+        <br /><span id="username"></span>
       </div>
     </div>
     <div class="content">
-      <!-- 其他内容在这里 -->
-      这里是其他内容。
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th id="id">id</th>
+            <th id="name">name</th>
+            <th id="type">type</th>
+            <th id="phone">status</th>
+            <th id="who">who</th>
+            <th id="address">address</th>
+            <th id="description">description</th>
+            <th id="time">time</th>
+            <th>操作1</th>
+            <th>操作2</th>
+            <th id="image">image</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 数据将显示在这里 -->
+        </tbody>
+      </table>
     </div>
   </body>
+  <script src="js/user.js"></script>
+  <script src="js/apparatus.js"></script>
 </html>

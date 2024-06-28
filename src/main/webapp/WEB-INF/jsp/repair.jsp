@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
     </style>
   </head>
   <body>
-    <p>Hello 最高管理员${account}</p>
+    <p>Hello 维修员${account}</p>
     <form action="#">
       <label
         >搜索仪器:

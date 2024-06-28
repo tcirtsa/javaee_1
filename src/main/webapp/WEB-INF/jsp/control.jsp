@@ -32,6 +32,32 @@ pageEncoding="UTF-8"%>
       }
     </style>
     <script>
+      let account = sessionStorage.getItem("account");
+      window.onload = function () {
+        fetch("query", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ account: account }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              // 使用 response.text() 来读取错误消息
+              return response.text().then((errorMessage) => {
+                throw new Error(
+                  `请求失败：${response.status} -${errorMessage}`
+                );
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("username").innerText =
+              "Hello 管理员" + data.name;
+          });
+      };
+
       function changeToUser() {
         document
           .getElementById("changeToUser")
@@ -72,7 +98,6 @@ pageEncoding="UTF-8"%>
           <th id="who">who</th>
           <th id="address">address</th>
           <th id="description">description</th>
-          <th id="time">time</th>
           <th>操作1</th>
           <th>操作2</th>
           <th id="image">image</th>
@@ -89,7 +114,7 @@ pageEncoding="UTF-8"%>
     </script>
   </head>
   <body>
-    <p>Hello 管理员${account}</p>
+    <p id="username"></p>
     <button id="changeToUser" onclick="changeToUser()">用户</button>
     <button id="changeToApparatus" onclick="changeToApparatus()">仪器</button>
     <form action="#">
@@ -119,5 +144,5 @@ pageEncoding="UTF-8"%>
     </table>
     <button id="refreshButton">刷新数据</button>
   </body>
-  <script src="js/connect1.js" type="module"></script>
+  <script src="js/connect1.js" type="module" id="connect"></script>
 </html>
