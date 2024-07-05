@@ -731,7 +731,7 @@ function uploadFile(cell) {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.text();
+        return response.json();
       })
       .then((result) => {
         alert(result);

@@ -1,4 +1,4 @@
-package cn.project.tools;
+package cn.project.jtee.tools;
 
 import org.springframework.web.multipart.MultipartFile;
 

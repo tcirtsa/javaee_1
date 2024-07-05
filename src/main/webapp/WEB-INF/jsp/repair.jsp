@@ -34,6 +34,7 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
     <p id="username"></p>
+    <button id="logout" onclick="location.href='login'">退出</button>
     <form action="#">
       <label
         >搜索仪器:
@@ -44,15 +45,14 @@ pageEncoding="UTF-8"%>
     <table id="data-table">
       <thead>
         <tr>
-          <th id="account">account</th>
+          <th id="id">id</th>
           <th id="name">name</th>
-          <th id="password">password</th>
+          <th id="type">type</th>
           <th id="phone">phone</th>
           <th id="address">address</th>
-          <th id="authority">authority</th>
-          <th id="image">image</th>
+          <th id="status">status</th>
           <th>操作1</th>
-          <th>操作2</th>
+          <th id="image">image</th>
         </tr>
       </thead>
       <tbody>

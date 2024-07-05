@@ -25,8 +25,8 @@ pageEncoding="UTF-8"%>
     <script type="text/javascript">
       // 从Flash属性中获取错误消息并弹出
       window.onload = function () {
-        var error = "${error}";
-        var account = "${account}";
+        let error = "${error}";
+        let account = "${account}";
         if (error) {
           alert(error);
           // 清除Flash属性，防止重复弹出
@@ -87,7 +87,6 @@ pageEncoding="UTF-8"%>
           if (!response.ok) {
             // 使用 response.text() 来读取错误消息
             return response.text().then((errorMessage) => {
-              alert(errorMessage);
               throw new Error(`请求失败：${response.status} -${errorMessage}`);
             });
           }

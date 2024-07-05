@@ -1,6 +1,7 @@
-window.onload = fetchData;
-document.getElementById("refreshButton").addEventListener("click", fetchData);
-function fetchData() {
+// 获取数据
+window.onload = fetchData1;
+document.getElementById("refreshButton").addEventListener("click", fetchData1);
+function fetchData1() {
   fetch("get_all_apparatus", {
     method: "GET",
     headers: {
@@ -96,7 +97,7 @@ function fetchData() {
         const uploadButton = document.createElement("button");
         uploadButton.textContent = "上传图片";
         uploadButton.onclick = function () {
-          uploadFile(idCell);
+          uploadFile(row.id);
         };
         uploadCell.appendChild(uploadButton);
         tr.appendChild(uploadCell);
@@ -226,27 +227,20 @@ function delete_apparatus(id) {
     })
     .then((data) => {
       alert(data);
-      fetchData();
+      fetchData1();
     })
     .catch((error) => {
       alert("请求错误:", error);
     });
 }
 
-function uploadFile(cell) {
-  const fileName = cell.textContent || cell.innerText;
-  if (!fileName) {
-    alert("请输入文件名称");
-    return;
-  }
-
-  // 创建一个临时的文件输入元素
+function uploadFile(fileName) {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "image/*"; // 接受所有图片类型
 
   // 绑定选择文件的事件
-  fileInput.addEventListener("change_image", function (event) {
+  fileInput.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (!file) {
       alert("请选择一个文件");
@@ -270,11 +264,10 @@ function uploadFile(cell) {
       .then((result) => {
         alert(result);
         alert("上传成功");
-        fetchData();
+        fetchData1();
       })
       .catch((error) => {
-        alert("上传失败:", error);
-        alert("文件上传失败");
+        console.log("上传失败:", error);
       });
   });
 
@@ -310,7 +303,7 @@ function insert_apparatus(id, name, type, phone, who, address, description) {
     })
     .then((data) => {
       alert(data);
-      fetchData();
+      fetchData1();
     })
     .catch((error) => {
       alert("请求错误:", error);

@@ -89,10 +89,10 @@ function fetchData1() {
         addressCell.innerText = row.address;
         tr.appendChild(addressCell);
 
-        //创建description单元格
-        const descriptionCell = document.createElement("td");
-        descriptionCell.innerText = row.description;
-        tr.appendChild(descriptionCell);
+        //创建status
+        const statusCell = document.createElement("td");
+        statusCell.innerText = row.status;
+        tr.appendChild(statusCell);
 
         fetch("image_apparatus", {
           method: "POST",
@@ -164,7 +164,8 @@ function repair(id, button) {
         fetchData1();
       })
       .catch((error) => {
-        alert("请求错误:", error);
+        console.log("请求错误:", error);
+        fetchData1();
       });
     alert("确定坏了吧？那就给我修！！！没坏的话给我变回去啊！");
   } else if (content == "维修中") {
@@ -190,7 +191,8 @@ function repair(id, button) {
         fetchData1();
       })
       .catch((error) => {
-        alert("请求错误:", error);
+        console.log("请求错误:", error);
+        fetchData1();
       });
   }
 }

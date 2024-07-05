@@ -31,84 +31,12 @@ pageEncoding="UTF-8"%>
         object-fit: contain; /* 保持图片的宽高比，不被拉伸 */
       }
     </style>
-    <script>
-      let account = sessionStorage.getItem("account");
-      window.onload = function () {
-        fetch("query", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ account: account }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              // 使用 response.text() 来读取错误消息
-              return response.text().then((errorMessage) => {
-                throw new Error(
-                  `请求失败：${response.status} -${errorMessage}`
-                );
-              });
-            }
-            return response.json();
-          })
-          .then((data) => {
-            document.getElementById("username").innerText =
-              "Hello 管理员" + data.name;
-          });
-      };
-
-      function changeToUser() {
-        document
-          .getElementById("changeToUser")
-          .addEventListener("click", function () {
-            let table = document.getElementById("data-table");
-            table.innerHTML = `<thead>
-        <tr>
-          <th id="account">account</th>
-          <th id="name">name</th>
-          <th id="password">password</th>
-          <th id="phone">phone</th>
-          <th id="address">address</th>
-          <th id="authority">authority</th>
-          <th>操作1</th>
-          <th>操作2</th>
-          <th id="image">image</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>`;
-          });
-      }
-      function changeToApparatus() {
-        document
-          .getElementById("changeToApparatus")
-          .addEventListener("click", function () {
-            let table = document.getElementById("data-table");
-            table.innerHTML = `<thead>
-        <tr>
-          <th id="id">id</th>
-          <th id="name">name</th>
-          <th id="type">type</th>
-          <th id="phone">status</th>
-          <th id="who">who</th>
-          <th id="address">address</th>
-          <th id="description">description</th>
-          <th>操作1</th>
-          <th>操作2</th>
-          <th id="image">image</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>`;
-          });
-      }
-    </script>
   </head>
   <body>
     <p id="username"></p>
-    <button id="changeToUser" onclick="changeToUser()">用户</button>
-    <button id="changeToApparatus" onclick="changeToApparatus()">仪器</button>
+    <button id="logout">退出</button>
+    <button id="changeToUser">用户</button>
+    <button id="changeToApparatus">仪器</button>
     <form action="#">
       <label
         >搜索账号:
@@ -136,6 +64,5 @@ pageEncoding="UTF-8"%>
     </table>
     <button id="refreshButton">刷新数据</button>
   </body>
-  <script src="js/connectall.js" type="module"></script>
-  <script src="js/apparatus2.js" type="module"></script>
+  <script src="js/change1.js" type="module"></script>
 </html>

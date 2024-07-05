@@ -1,12 +1,12 @@
-package cn.project.mapper;
+package cn.project.jtee.mapper;
 
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import cn.project.model.User;
+import cn.project.jtee.model.User;
 
 @Mapper
-public interface uMapper {
+public interface UserMapper {
     @Select("select * from user where authority = 0 || authority = 2 || authority = 1")
     public List<User> findAll();
 

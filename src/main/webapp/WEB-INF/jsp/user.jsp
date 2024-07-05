@@ -63,12 +63,13 @@ pageEncoding="UTF-8"%>
     <div class="header">
       <div class="profile">
         <div class="image-container">
-          <img id="image" alt="用户头像" class="image" />
+          <img id="head" alt="用户头像" class="image" />
         </div>
         <br /><span id="username"></span>
       </div>
       <button id="reset_psd">修改密码</button>
       <button id="reset_head">上传头像</button>
+      <button id="logout">退出</button>
     </div>
     <div class="content">
       <table id="data-table">
@@ -77,11 +78,10 @@ pageEncoding="UTF-8"%>
             <th id="id">id</th>
             <th id="name">name</th>
             <th id="type">type</th>
-            <th id="phone">status</th>
+            <th id="phone">phone</th>
             <th id="who">who</th>
             <th id="address">address</th>
             <th id="description">description</th>
-            <th id="time">time</th>
             <th>操作1</th>
             <th>操作2</th>
             <th id="image">image</th>
@@ -93,11 +93,5 @@ pageEncoding="UTF-8"%>
       </table>
     </div>
   </body>
-  <script>
-    document.getElementById("reset_psd").addEventListener("click", function () {
-      window.location.href = "reset_psd";
-    });
-  </script>
   <script src="js/user.js"></script>
-  <script src="js/apparatus.js"></script>
 </html>

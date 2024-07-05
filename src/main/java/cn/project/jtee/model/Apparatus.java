@@ -1,4 +1,4 @@
-package cn.project.model;
+package cn.project.jtee.model;
 
 import lombok.Data;
 
