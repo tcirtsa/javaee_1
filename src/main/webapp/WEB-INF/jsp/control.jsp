@@ -37,6 +37,7 @@ pageEncoding="UTF-8"%>
     <button id="logout">退出</button>
     <button id="changeToUser">用户</button>
     <button id="changeToApparatus">仪器</button>
+    <button id="changeToPay">支付</button>
     <form action="#">
       <label
         >搜索账号:
@@ -49,7 +50,6 @@ pageEncoding="UTF-8"%>
         <tr>
           <th id="account">account</th>
           <th id="name">name</th>
-          <th id="password">password</th>
           <th id="phone">phone</th>
           <th id="address">address</th>
           <th id="authority">authority</th>

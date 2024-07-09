@@ -1,51 +1,3 @@
-function makeCellEditable(cell1, cell2) {
-  const originalText = cell2.innerText; // 保存原始文本
-  cell2.innerHTML = ""; // 清空单元格内容
-  const input = document.createElement("input"); // 创建输入框
-  input.type = "text";
-  input.value = originalText;
-  input.style.width = "100%";
-  cell2.appendChild(input); // 单元格内添加输入框
-  input.focus();
-
-  // 输入框失去焦点时保存更改并恢复到文本模式
-  input.addEventListener("blur", () => {
-    const newText = input.value.trim();
-    cell2.innerHTML = newText; // 更新单元格文本
-    // 可在此处发送更新到服务器的请求
-    fetch("update_psd", {
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ account: cell1.innerText, password: newText }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // 使用 response.text() 来读取错误消息
-          return response.text().then((errorMessage) => {
-            throw new Error(`请求失败：${response.status} -${errorMessage}`);
-          });
-        }
-        // 使用 response.text() 来读取成功的响应
-        return response.text();
-      })
-      .then((data) => {
-        alert("Success:", data);
-        fetchData();
-      })
-      .catch((error) => {
-        alert("Error:", error);
-      });
-  });
-
-  // 输入框内按下回车键时同样保存更改
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      input.blur(); // 触发blur事件
-    }
-  });
-}
 
 function makeCellEditable1(cell1, cell2) {
   const originalText = cell2.innerText; // 保存原始文本
@@ -133,14 +85,6 @@ function fetchData() {
           const nameCell = document.createElement("td");
           nameCell.innerText = row.name;
           tr.appendChild(nameCell);
-
-          // 创建psd单元格
-          const psdCell = document.createElement("td");
-          psdCell.innerText = row.password;
-          psdCell.addEventListener("click", () =>
-            makeCellEditable(accountCell, psdCell)
-          ); // 点击变为编辑状态
-          tr.appendChild(psdCell);
 
           // 创建phone单元格
           const phoneCell = document.createElement("td");

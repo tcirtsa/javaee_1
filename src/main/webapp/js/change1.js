@@ -58,7 +58,6 @@ function changeToUser(src) {
         <tr>
           <th id="account">account</th>
           <th id="name">name</th>
-          <th id="password">password</th>
           <th id="phone">phone</th>
           <th id="address">address</th>
           <th id="authority">authority</th>
@@ -88,12 +87,30 @@ function changeToApparatus(src) {
           <th id="description">description</th>
           <th>操作1</th>
           <th>操作2</th>
+          <th>操作3</th>
           <th id="image">image</th>
         </tr>
       </thead>
       <tbody>
       </tbody>`;
     });
+  loadScript(src);
+}
+function changeToPay(src) {
+  document.getElementById("changeToPay").addEventListener("click", function () {
+    let table = document.getElementById("data-table");
+    table.innerHTML = `<thead>
+        <tr>
+          <th id="id">id</th>
+          <th id="description">description</th>
+          <th id="who">who</th>
+          <th id="pay">pay</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>`;
+  });
   loadScript(src);
 }
 document.getElementById("logout").addEventListener("click", function () {
@@ -108,3 +125,6 @@ document
   .addEventListener("click", function () {
     changeToApparatus("js/apparatus2.js");
   });
+document.getElementById("changeToPay").addEventListener("click", function () {
+  changeToPay("js/pay.js");
+});

@@ -62,76 +62,78 @@ function fetchData1() {
         .getElementsByTagName("tbody")[0];
       tableBody.innerHTML = ""; // 清空现有表格内容
       data.forEach((row) => {
-        const tr = document.createElement("tr");
+        if (row.status == 2) {
+          const tr = document.createElement("tr");
 
-        //创建id单元格
-        const idCell = document.createElement("td");
-        idCell.innerText = row.id;
-        tr.appendChild(idCell);
+          //创建id单元格
+          const idCell = document.createElement("td");
+          idCell.innerText = row.id;
+          tr.appendChild(idCell);
 
-        //创建name单元格
-        const nameCell = document.createElement("td");
-        nameCell.innerText = row.name;
-        tr.appendChild(nameCell);
+          //创建name单元格
+          const nameCell = document.createElement("td");
+          nameCell.innerText = row.name;
+          tr.appendChild(nameCell);
 
-        //创建type单元格
-        const typeCell = document.createElement("td");
-        typeCell.innerText = row.type;
-        tr.appendChild(typeCell);
+          //创建type单元格
+          const typeCell = document.createElement("td");
+          typeCell.innerText = row.type;
+          tr.appendChild(typeCell);
 
-        //创建phone单元格
-        const phoneCell = document.createElement("td");
-        phoneCell.innerText = row.phone;
-        tr.appendChild(phoneCell);
+          //创建phone单元格
+          const phoneCell = document.createElement("td");
+          phoneCell.innerText = row.phone;
+          tr.appendChild(phoneCell);
 
-        //创建address单元格
-        const addressCell = document.createElement("td");
-        addressCell.innerText = row.address;
-        tr.appendChild(addressCell);
+          //创建address单元格
+          const addressCell = document.createElement("td");
+          addressCell.innerText = row.address;
+          tr.appendChild(addressCell);
 
-        //创建status
-        const statusCell = document.createElement("td");
-        statusCell.innerText = row.status;
-        tr.appendChild(statusCell);
+          //创建status
+          const statusCell = document.createElement("td");
+          statusCell.innerText = row.status;
+          tr.appendChild(statusCell);
 
-        fetch("image_apparatus", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ image: row.image }), // 发送包含图片URL的JSON对象
-        })
-          .then((response) => response.blob()) // 将响应解析为Blob对象
-          .then((blob) => {
-            // 将Blob对象转换为Image URL
-            const imgURL = URL.createObjectURL(blob);
-
-            const imageCell = document.createElement("td");
-            const imageInput = document.createElement("img");
-            imageInput.src = imgURL;
-            imageCell.appendChild(imageInput);
-            tr.appendChild(imageCell);
+          fetch("image_apparatus", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ image: row.image }), // 发送包含图片URL的JSON对象
           })
-          .catch((error) => {
-            alert("加载图片出错:", error);
-          });
+            .then((response) => response.blob()) // 将响应解析为Blob对象
+            .then((blob) => {
+              // 将Blob对象转换为Image URL
+              const imgURL = URL.createObjectURL(blob);
 
-        // 不可编辑的其他数据单元格...
-        // 创建repair单元格
-        const repairCell = document.createElement("td");
-        const repairButton = document.createElement("button");
-        if (row.status == 0 || row.status == 1) {
-          repairButton.textContent = "正常";
-        } else {
-          repairButton.textContent = "维修中";
+              const imageCell = document.createElement("td");
+              const imageInput = document.createElement("img");
+              imageInput.src = imgURL;
+              imageCell.appendChild(imageInput);
+              tr.appendChild(imageCell);
+            })
+            .catch((error) => {
+              alert("加载图片出错:", error);
+            });
+
+          // 不可编辑的其他数据单元格...
+          // 创建repair单元格
+          const repairCell = document.createElement("td");
+          const repairButton = document.createElement("button");
+          if (row.status == 0 || row.status == 1) {
+            repairButton.textContent = "正常";
+          } else {
+            repairButton.textContent = "维修中";
+          }
+          repairButton.addEventListener("click", () =>
+            repair(row.id, repairButton)
+          );
+          repairCell.appendChild(repairButton);
+          tr.appendChild(repairCell);
+
+          tableBody.appendChild(tr);
         }
-        repairButton.addEventListener("click", () =>
-          repair(row.id, repairButton)
-        );
-        repairCell.appendChild(repairButton);
-        tr.appendChild(repairCell);
-
-        tableBody.appendChild(tr);
       });
     })
     .catch((error) => {
@@ -142,57 +144,8 @@ function fetchData1() {
 function repair(id, button) {
   let content = button.textContent;
   if (content == "正常") {
-    fetch("ToRepair_apparatus", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id, who: account }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // 使用 response.text() 来读取错误消息
-          return response.text().then((errorMessage) => {
-            throw new Error(`请求失败：${response.status} -${errorMessage}`);
-          });
-        }
-        // 使用 response.text() 来读取成功的响应
-        return response.text();
-      })
-      .then((data) => {
-        alert(data);
-        fetchData1();
-      })
-      .catch((error) => {
-        console.log("请求错误:", error);
-        fetchData1();
-      });
-    alert("确定坏了吧？那就给我修！！！没坏的话给我变回去啊！");
+    alert("正常，不需要维修");
   } else if (content == "维修中") {
-    fetch("repair_apparatus", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // 使用 response.text() 来读取错误消息
-          return response.text().then((errorMessage) => {
-            throw new Error(`请求失败：${response.status} -${errorMessage}`);
-          });
-        }
-        // 使用 response.text() 来读取成功的响应
-        return response.text();
-      })
-      .then((data) => {
-        alert(data);
-        fetchData1();
-      })
-      .catch((error) => {
-        console.log("请求错误:", error);
-        fetchData1();
-      });
+    window.location.href = "pay?id=" + id + "&who=" + account;
   }
 }

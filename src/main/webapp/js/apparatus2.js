@@ -84,13 +84,13 @@ function fetchData1() {
           });
 
         // 不可编辑的其他数据单元格...
-        // 创建repair单元格
-        const repairCell = document.createElement("td");
-        const repairButton = document.createElement("button");
-        repairButton.textContent = "删除";
-        repairButton.addEventListener("click", () => delete_apparatus(row.id));
-        repairCell.appendChild(repairButton);
-        tr.appendChild(repairCell);
+        // 创建delete单元格
+        const deleteCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "删除";
+        deleteButton.addEventListener("click", () => delete_apparatus(row.id));
+        deleteCell.appendChild(deleteButton);
+        tr.appendChild(deleteCell);
 
         //创建上传图片单元格
         const uploadCell = document.createElement("td");
@@ -101,6 +101,20 @@ function fetchData1() {
         };
         uploadCell.appendChild(uploadButton);
         tr.appendChild(uploadCell);
+
+        // 创建repair单元格
+        const repairCell = document.createElement("td");
+        const repairButton = document.createElement("button");
+        if (row.status == 0 || row.status == 1) {
+          repairButton.textContent = "正常";
+        } else {
+          repairButton.textContent = "维修中";
+        }
+        repairButton.addEventListener("click", () =>
+          repair(row.id, repairButton)
+        );
+        repairCell.appendChild(repairButton);
+        tr.appendChild(repairCell);
 
         tableBody.appendChild(tr);
       });
@@ -308,4 +322,63 @@ function insert_apparatus(id, name, type, phone, who, address, description) {
     .catch((error) => {
       alert("请求错误:", error);
     });
+}
+
+function repair(id, button) {
+  let content = button.textContent;
+  if (content == "正常") {
+    fetch("ToRepair_apparatus", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id, who: 12345 }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // 使用 response.text() 来读取错误消息
+          return response.text().then((errorMessage) => {
+            throw new Error(`请求失败：${response.status} -${errorMessage}`);
+          });
+        }
+        // 使用 response.text() 来读取成功的响应
+        return response.text();
+      })
+      .then((data) => {
+        alert(data);
+        fetchData1();
+      })
+      .catch((error) => {
+        console.log("请求错误:", error);
+        fetchData1();
+      });
+    alert("确定坏了吧？没坏的话给我变回去啊！");
+    window.location.href = "/insert_pay";
+  } else if (content == "维修中") {
+    fetch("repair_apparatus", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // 使用 response.text() 来读取错误消息
+          return response.text().then((errorMessage) => {
+            throw new Error(`请求失败：${response.status} -${errorMessage}`);
+          });
+        }
+        // 使用 response.text() 来读取成功的响应
+        return response.text();
+      })
+      .then((data) => {
+        alert(data);
+        fetchData1();
+      })
+      .catch((error) => {
+        console.log("请求错误:", error);
+        fetchData1();
+      });
+  }
 }
